@@ -1,0 +1,6 @@
+{
+  "name": "Blockverse",
+  "description": "Blockverse: Neon Rush - 2026-style futuristic 10x10 block puzzle game with neon glass aesthetics, combos, power-ups, and multiple game modes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

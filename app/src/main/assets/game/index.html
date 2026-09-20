@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>BLOCKVERSE: NEON RUSH</title>
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+  <!-- Preloader Screen -->
+  <div id="preloader">
+    <div class="preloader-blocks">
+      <div class="loader-cube"></div>
+      <div class="loader-cube"></div>
+      <div class="loader-cube"></div>
+      <div class="loader-cube"></div>
+    </div>
+    <div style="font-size: 24px; font-weight: 900; letter-spacing: 3px; color: #00f0ff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.8);">BLOCKVERSE</div>
+    <div style="font-size: 12px; font-weight: 700; color: #8b9bb4; letter-spacing: 1.5px;">LOADING THE GRID...</div>
+  </div>
+
+  <!-- Achievement Popup Banner -->
+  <div id="achievement-toast">
+    <div style="font-size: 26px;">🏆</div>
+    <div>
+      <div id="toast-title" style="font-size: 11px; font-weight: 800; color: #ffd700; letter-spacing: 1px;">ACHIEVEMENT UNLOCKED!</div>
+      <div id="toast-desc" style="font-size: 13px; font-weight: 900; color: #ffffff;">FIRST CLEAR</div>
+    </div>
+  </div>
+
+  <!-- Main App Shell -->
+  <div id="app-container">
+    <div class="cyber-grid"></div>
+    <!-- Full-Screen FX & Drag Canvas Overlay -->
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- HOME SCREEN -->
+    <div id="screen-home" class="screen active">
+      <!-- Top Status Bar -->
+      <div class="top-nav glass-panel">
+        <div class="user-profile-badge" id="btn-profile-stats">
+          <div class="avatar-ring">
+            <div class="avatar-inner" id="user-avatar-text">B</div>
+          </div>
+          <div class="user-text-info">
+            <span class="user-name">NEON RUNNER</span>
+            <span class="user-level-tag" id="home-level-tag">LVL 1 • Beginner</span>
+          </div>
+        </div>
+
+        <div class="currencies-group">
+          <div class="pill-currency coins" id="home-coins-pill">
+            <span>🪙</span>
+            <span id="home-coins-val">250</span>
+          </div>
+          <div class="pill-currency gems" id="home-gems-pill">
+            <span>💎</span>
+            <span id="home-gems-val">15</span>
+          </div>
+          <button class="icon-btn" id="btn-home-settings" title="Settings">⚙️</button>
+        </div>
+      </div>
+
+      <!-- Center Logo & Play Hero -->
+      <div class="home-center">
+        <div class="logo-wrapper">
+          <div class="main-logo-text">BLOCKVERSE</div>
+          <div class="subtitle-badge">DROP • CLEAR • COMBO</div>
+        </div>
+
+        <!-- Big Play Button -->
+        <button class="btn-play-hero" id="btn-play-game">
+          <span>⚡</span>
+          <span id="txt-play">PLAY</span>
+        </button>
+
+        <!-- Mode Selection Cards -->
+        <div class="modes-selector">
+          <div class="mode-card active" data-mode="classic">
+            <span class="mode-icon">♾️</span>
+            <span class="mode-title" id="txt-mode-classic">Classic</span>
+          </div>
+          <div class="mode-card" data-mode="timerush">
+            <span class="mode-icon">⏱️</span>
+            <span class="mode-title" id="txt-mode-timerush">Time Rush</span>
+          </div>
+          <div class="mode-card" data-mode="zen">
+            <span class="mode-icon">🧘</span>
+            <span class="mode-title" id="txt-mode-zen">Zen Mode</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Navigation Shelf -->
+      <div class="home-bottom-grid">
+        <div class="action-card-btn" id="btn-daily-challenge">
+          <span class="action-icon">📅</span>
+          <span class="action-label" id="txt-nav-daily">Daily</span>
+        </div>
+        <div class="action-card-btn" id="btn-missions">
+          <span class="action-icon">🎯</span>
+          <span class="action-label" id="txt-nav-missions">Missions</span>
+        </div>
+        <div class="action-card-btn" id="btn-themes">
+          <span class="action-icon">🎨</span>
+          <span class="action-label" id="txt-nav-themes">Themes</span>
+        </div>
+        <div class="action-card-btn" id="btn-shop">
+          <span class="action-icon">⚡</span>
+          <span class="action-label" id="txt-nav-powerups">Power-Ups</span>
+        </div>
+        <div class="action-card-btn" id="btn-leaderboard">
+          <span class="action-icon">👑</span>
+          <span class="action-label" id="txt-nav-leaderboard">Ranks</span>
+        </div>
+        <div class="action-card-btn" id="btn-achievements">
+          <span class="action-icon">🏆</span>
+          <span class="action-label" id="txt-nav-achievements">Badges</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAMEPLAY SCREEN -->
+    <div id="screen-game" class="screen">
+      <!-- Game Top Status Bar -->
+      <div class="game-top-bar">
+        <button class="icon-btn" id="btn-game-back" title="Home">‹</button>
+
+        <div class="score-box-main">
+          <span class="score-label" id="txt-score-label">SCORE</span>
+          <span class="score-value" id="game-score-val">0</span>
+        </div>
+
+        <div class="best-score-badge">
+          <span class="best-label" id="txt-best-label">BEST</span>
+          <span class="best-value" id="game-best-val">0</span>
+        </div>
+
+        <div class="combo-badge" id="game-combo-badge">2x COMBO</div>
+
+        <div class="pill-currency coins" style="padding: 4px 8px;">
+          <span>🪙</span>
+          <span id="game-coins-val">0</span>
+        </div>
+
+        <button class="icon-btn" id="btn-game-pause" title="Pause">⏸️</button>
+      </div>
+
+      <!-- Timer or Combo Meter Bar -->
+      <div class="combo-meter-track">
+        <div class="combo-meter-fill" id="combo-meter-bar"></div>
+      </div>
+
+      <!-- Combo Fever Active Banner -->
+      <div id="game-fever-banner" class="fever-banner" style="display: none;">
+        <span>⚡</span>
+        <span id="fever-text">COMBO FEVER • 2X SCORE MULTIPLIER</span>
+        <span>⚡</span>
+      </div>
+
+      <!-- 10x10 Game Board Canvas Area -->
+      <div class="board-wrapper">
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <!-- Tactical Power-Ups Shelf -->
+      <div class="powerups-shelf">
+        <div class="powerup-btn" data-power="hammer" title="Hammer">
+          <span class="powerup-icon">🔨</span>
+          <span class="powerup-count-tag" id="count-hammer">3</span>
+        </div>
+        <div class="powerup-btn" data-power="lightning" title="Lightning">
+          <span class="powerup-icon">⚡</span>
+          <span class="powerup-count-tag" id="count-lightning">2</span>
+        </div>
+        <div class="powerup-btn" data-power="colorbomb" title="Color Bomb">
+          <span class="powerup-icon">💣</span>
+          <span class="powerup-count-tag" id="count-colorbomb">2</span>
+        </div>
+        <div class="powerup-btn" data-power="shuffle" title="Shuffle">
+          <span class="powerup-icon">🔄</span>
+          <span class="powerup-count-tag" id="count-shuffle">3</span>
+        </div>
+        <div class="powerup-btn" data-power="undo" title="Undo">
+          <span class="powerup-icon">↩️</span>
+          <span class="powerup-count-tag" id="count-undo">3</span>
+        </div>
+        <div class="powerup-btn" data-power="magnet" title="Magnet">
+          <span class="powerup-icon">🧲</span>
+          <span class="powerup-count-tag" id="count-magnet">1</span>
+        </div>
+      </div>
+
+      <!-- Available 3 Pieces Bottom Tray -->
+      <div class="pieces-tray" id="pieces-tray">
+        <div class="tray-slot" id="slot-0"></div>
+        <div class="tray-slot" id="slot-1"></div>
+        <div class="tray-slot" id="slot-2"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: PAUSE -->
+    <div class="modal-overlay" id="modal-pause">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>⏸️</span> <span id="txt-paused-title">PAUSED</span></div>
+        </div>
+        <button class="btn-primary-neon" id="btn-pause-resume">RESUME</button>
+        <button class="btn-secondary-neon" id="btn-pause-restart">RESTART</button>
+        <button class="btn-secondary-neon" id="btn-pause-settings">SETTINGS</button>
+        <button class="btn-secondary-neon" id="btn-pause-home">HOME</button>
+      </div>
+    </div>
+
+    <!-- MODAL: GAME OVER -->
+    <div class="modal-overlay" id="modal-gameover">
+      <div class="modal-dialog" style="text-align: center;">
+        <div style="font-size: 36px;">💀</div>
+        <div style="font-size: 26px; font-weight: 900; color: #ff007f; letter-spacing: 2px;">GAME OVER</div>
+
+        <div id="gameover-new-best" class="new-best-flag" style="display: none; align-self: center;">★ NEW BEST RECORD! ★</div>
+
+        <div style="margin: 8px 0;">
+          <div style="font-size: 11px; font-weight: 800; color: #8b9bb4;">FINAL SCORE</div>
+          <div id="gameover-score" style="font-size: 42px; font-weight: 900; color: #00f0ff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.8);">0</div>
+        </div>
+
+        <div class="gameover-stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">LINES CLEARED</span>
+            <span class="stat-val" id="gameover-lines">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">MAX COMBO</span>
+            <span class="stat-val" id="gameover-combo">0x</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">XP EARNED</span>
+            <span class="stat-val" id="gameover-xp">+0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">COINS EARNED</span>
+            <span class="stat-val" id="gameover-coins">+0</span>
+          </div>
+        </div>
+
+        <button class="btn-primary-neon" id="btn-gameover-replay">PLAY AGAIN</button>
+        <button class="btn-secondary-neon" id="btn-gameover-share">SHARE SCORE ⚡</button>
+        <button class="btn-secondary-neon" id="btn-gameover-home">HOME</button>
+      </div>
+    </div>
+
+    <!-- MODAL: SETTINGS -->
+    <div class="modal-overlay" id="modal-settings">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>⚙️</span> <span id="txt-settings-title">SETTINGS</span></div>
+          <button class="modal-close-btn" data-close="modal-settings">✕</button>
+        </div>
+
+        <div class="settings-row">
+          <span class="settings-label" id="txt-setting-sfx">Sound Effects</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-sfx" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <span class="settings-label" id="txt-setting-music">Music</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-music" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <span class="settings-label" id="txt-setting-vibe">Haptics / Vibration</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-vibe" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <span class="settings-label" id="txt-setting-shake">Screen Shake</span>
+          <label class="switch">
+            <input type="checkbox" id="toggle-shake" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <span class="settings-label" id="txt-setting-lang">Language</span>
+          <select id="select-language" style="background: #090e24; color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.4); border-radius: 8px; padding: 6px 12px; font-weight: 800;">
+            <option value="en">English</option>
+            <option value="bn">বাংলা (Bangla)</option>
+          </select>
+        </div>
+
+        <div class="settings-row" id="btn-developer-option" style="cursor: pointer; background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(176, 38, 255, 0.12)); border: 1px solid rgba(0, 240, 255, 0.4); margin: 4px 0;">
+          <span class="settings-label" id="txt-setting-developer" style="display: flex; align-items: center; gap: 8px; color: #00f0ff;">
+            <span>👨‍💻</span> <span>Developer Option</span>
+          </span>
+          <span style="color: #00f0ff; font-weight: 900; font-size: 16px;">➔</span>
+        </div>
+
+        <button class="btn-secondary-neon" id="btn-show-tutorial-settings">HOW TO PLAY</button>
+        <button class="btn-secondary-neon" id="btn-reset-data" style="color: #ff5555;">RESET PROGRESS</button>
+      </div>
+    </div>
+
+    <!-- MODAL: DEVELOPER OPTION -->
+    <div class="modal-overlay" id="modal-developer">
+      <div class="modal-dialog" style="text-align: center; max-width: 380px;">
+        <div class="modal-header">
+          <div class="modal-title"><span>👨‍💻</span> <span id="txt-developer-modal-title">DEVELOPER INFO</span></div>
+          <button class="modal-close-btn" data-close="modal-developer">✕</button>
+        </div>
+
+        <div class="developer-profile-card">
+          <div class="developer-photo-box">
+            <img src="developer.jpg" alt="Developer" class="developer-photo-img" id="developer-img" />
+          </div>
+          <div class="developer-badge-pill">⚡ VERIFIED DEVELOPER</div>
+          <div class="developer-heading-name">Game Creator & Architect</div>
+          <div class="developer-sub-info">Blockverse 2.0 Lead Developer</div>
+        </div>
+
+        <button class="btn-primary-neon" data-close="modal-developer" style="margin-top: 16px; width: 100%;">CLOSE</button>
+      </div>
+    </div>
+
+    <!-- MODAL: THEMES -->
+    <div class="modal-overlay" id="modal-themes">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>🎨</span> <span id="txt-themes-title">CYBER THEMES</span></div>
+          <button class="modal-close-btn" data-close="modal-themes">✕</button>
+        </div>
+        <div class="themes-grid" id="themes-container"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: MISSIONS -->
+    <div class="modal-overlay" id="modal-missions">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>🎯</span> <span id="txt-missions-title">MISSIONS</span></div>
+          <button class="modal-close-btn" data-close="modal-missions">✕</button>
+        </div>
+        <div id="missions-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: ACHIEVEMENTS -->
+    <div class="modal-overlay" id="modal-achievements">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>🏆</span> <span id="txt-achieve-title">ACHIEVEMENTS</span></div>
+          <button class="modal-close-btn" data-close="modal-achievements">✕</button>
+        </div>
+        <div id="achievements-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: POWER-UPS SHOP -->
+    <div class="modal-overlay" id="modal-shop">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>⚡</span> <span id="txt-shop-title">POWER-UPS STORE</span></div>
+          <button class="modal-close-btn" data-close="modal-shop">✕</button>
+        </div>
+        <div id="shop-items-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: LEADERBOARD -->
+    <div class="modal-overlay" id="modal-leaderboard">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>👑</span> <span id="txt-ranks-title">GLOBAL LEADERBOARD</span></div>
+          <button class="modal-close-btn" data-close="modal-leaderboard">✕</button>
+        </div>
+        <div id="leaderboard-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: DAILY CHALLENGE -->
+    <div class="modal-overlay" id="modal-daily">
+      <div class="modal-dialog" style="text-align: center;">
+        <div class="modal-header">
+          <div class="modal-title"><span>📅</span> <span>DAILY CHALLENGE</span></div>
+          <button class="modal-close-btn" data-close="modal-daily">✕</button>
+        </div>
+        <div style="font-size: 32px; margin-top: 10px;">⚡</div>
+        <div id="daily-objective-text" style="font-size: 18px; font-weight: 900; color: #00f0ff; margin: 8px 0;">Clear 15 Lines in One Game</div>
+        <div style="font-size: 13px; color: #8b9bb4;">Complete today's challenge to earn exclusive rewards!</div>
+        <div style="display: flex; justify-content: center; gap: 14px; margin: 14px 0;">
+          <div class="pill-currency coins" style="padding: 6px 14px;">🪙 500 Coins</div>
+          <div class="pill-currency gems" style="padding: 6px 14px;">💎 10 Gems</div>
+        </div>
+        <button class="btn-primary-neon" id="btn-start-daily">START CHALLENGE</button>
+      </div>
+    </div>
+
+    <!-- MODAL: PLAYER PROFILE -->
+    <div class="modal-overlay" id="modal-profile">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>👤</span> <span>PLAYER PROFILE</span></div>
+          <button class="modal-close-btn" data-close="modal-profile">✕</button>
+        </div>
+
+        <!-- Profile Header -->
+        <div class="profile-hero-card">
+          <div class="avatar-ring large" id="profile-avatar-display">⚡</div>
+          <div class="profile-meta">
+            <div class="profile-name" id="profile-username">NEON RUNNER</div>
+            <div class="profile-rank-tag" id="profile-rank-title">CYBER RECRUIT</div>
+            <div class="profile-streak-badge" id="profile-streak-tag">🔥 STREAK: 1 DAY (+5% BONUS)</div>
+          </div>
+        </div>
+
+        <!-- Avatar Picker -->
+        <div style="margin: 8px 0;">
+          <div style="font-size: 11px; font-weight: 800; color: #8b9bb4; margin-bottom: 6px;">CHOOSE AVATAR</div>
+          <div class="avatar-selection-row" id="avatar-selection-row">
+            <button class="avatar-choice-btn active" data-avatar="⚡">⚡</button>
+            <button class="avatar-choice-btn" data-avatar="🤖">🤖</button>
+            <button class="avatar-choice-btn" data-avatar="⚔️">⚔️</button>
+            <button class="avatar-choice-btn" data-avatar="🦊">🦊</button>
+            <button class="avatar-choice-btn" data-avatar="👑">👑</button>
+            <button class="avatar-choice-btn" data-avatar="🌟">🌟</button>
+          </div>
+        </div>
+
+        <!-- XP Progress -->
+        <div style="margin: 10px 0;">
+          <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: #8b9bb4; margin-bottom: 4px;">
+            <span id="profile-level-text">LEVEL 1</span>
+            <span id="profile-xp-text">0 / 500 XP</span>
+          </div>
+          <div class="xp-bar-track">
+            <div class="xp-bar-fill" id="profile-xp-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Lifetime Career Statistics Grid -->
+        <div class="profile-stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">BEST SCORE</span>
+            <span class="stat-val" id="prof-stat-best">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">LINES CLEARED</span>
+            <span class="stat-val" id="prof-stat-lines">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">MAX COMBO</span>
+            <span class="stat-val" id="prof-stat-combo">0x</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">LONGEST CHAIN</span>
+            <span class="stat-val" id="prof-stat-chain">x1</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">GAMES PLAYED</span>
+            <span class="stat-val" id="prof-stat-games">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">BLOCKS PLACED</span>
+            <span class="stat-val" id="prof-stat-blocks">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: 7-DAY DAILY REWARD CALENDAR & STREAK -->
+    <div class="modal-overlay" id="modal-daily-reward">
+      <div class="modal-dialog" style="text-align: center;">
+        <div class="modal-header">
+          <div class="modal-title"><span>📅</span> <span>7-DAY REWARD CALENDAR</span></div>
+          <button class="modal-close-btn" data-close="modal-daily-reward">✕</button>
+        </div>
+
+        <!-- Streak Banner -->
+        <div class="daily-streak-card">
+          <span style="font-size: 28px;">🔥</span>
+          <div style="text-align: left;">
+            <div style="font-size: 14px; font-weight: 900; color: #ff7700;" id="daily-calendar-streak-title">DAILY STREAK: 1 DAY</div>
+            <div style="font-size: 11px; color: #8b9bb4;" id="daily-calendar-streak-sub">Play consecutive days to unlock up to +35% XP & Coin bonuses!</div>
+          </div>
+        </div>
+
+        <!-- 7 Days Grid -->
+        <div class="calendar-7days-grid" id="calendar-7days-grid"></div>
+
+        <!-- Claim Action Button -->
+        <button class="btn-primary-neon" id="btn-claim-daily-reward" style="margin-top: 14px;">CLAIM TODAY'S REWARD!</button>
+        <div id="daily-reward-timer-notice" style="font-size: 12px; color: #8b9bb4; margin-top: 8px; display: none;">Next reward available in <span id="daily-next-timer" style="color: #00f0ff; font-weight: 800;">00:00:00</span></div>
+      </div>
+    </div>
+
+    <!-- MODAL: COLLECTION / LOCKER SYSTEM -->
+    <div class="modal-overlay" id="modal-collection">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <div class="modal-title"><span>💎</span> <span>LOCKER & COLLECTIONS</span></div>
+          <button class="modal-close-btn" data-close="modal-collection">✕</button>
+        </div>
+
+        <!-- Collection Category Tabs -->
+        <div class="collection-tabs-row">
+          <button class="coll-tab-btn active" data-coll="skins">SKINS</button>
+          <button class="coll-tab-btn" data-coll="boards">BOARDS</button>
+          <button class="coll-tab-btn" data-coll="particles">PARTICLES</button>
+          <button class="coll-tab-btn" data-coll="trails">TRAILS</button>
+        </div>
+
+        <!-- Collection Items Container -->
+        <div class="collection-items-grid" id="collection-items-grid"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: HOW TO PLAY / TUTORIAL -->
+    <div class="modal-overlay" id="modal-tutorial">
+      <div class="modal-dialog" style="max-height: 85vh; overflow-y: auto;">
+        <div class="modal-header">
+          <div class="modal-title"><span>📖</span> <span id="txt-tutorial-title">HOW TO PLAY & SPECIAL BLOCKS</span></div>
+          <button class="modal-close-btn" data-close="modal-tutorial">✕</button>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">🖐️</div>
+            <div id="txt-tut-step1">Touch & drag pieces from the tray onto the 10x10 grid.</div>
+          </div>
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">📏</div>
+            <div id="txt-tut-step2">Fill complete rows or columns to vaporize them and score!</div>
+          </div>
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">💥</div>
+            <div id="txt-tut-step3">Clear multiple lines simultaneously for Combos and trigger FEVER MODE!</div>
+          </div>
+
+          <div style="font-size: 12px; font-weight: 900; color: #00f0ff; letter-spacing: 1px; margin-top: 6px;">⚡ SPECIAL 2.0 BLOCKS:</div>
+
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">💣</div>
+            <div><b>Bomb Block:</b> Explodes 3x3 surrounding cells on clear, triggering chain cascades!</div>
+          </div>
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">⚡</div>
+            <div><b>Lightning Block:</b> Discharges laser beams across its entire row AND column!</div>
+          </div>
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">🌈</div>
+            <div><b>Rainbow Block:</b> Vaporizes all board blocks matching neighboring colors!</div>
+          </div>
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">❄️</div>
+            <div><b>Ice Block:</b> Armored block requiring 2 clears to completely shatter!</div>
+          </div>
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">✖️</div>
+            <div><b>Multiplier Block:</b> Multiplies line score by 2x or 3x on clear!</div>
+          </div>
+          <div class="settings-row" style="gap: 10px;">
+            <div style="font-size: 24px;">⭐</div>
+            <div><b>Wild Block:</b> Universal connector awarding huge bonus points!</div>
+          </div>
+        </div>
+        <button class="btn-primary-neon" id="btn-tutorial-ok" style="margin-top: 12px;">LET'S PLAY!</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="translations.js"></script>
+  <script src="shapes.js"></script>
+  <script src="audio.js"></script>
+  <script src="particles.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
