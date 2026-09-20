@@ -1,0 +1,43 @@
+name: Build BLOCKVERSE APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract BLOCKVERSE project
+        run: |
+          unzip -o BLOCKVERSE_APK_READY.zip -d blockverse
+          cp -r blockverse/.github .
+          cp -r blockverse/app .
+          cp -r blockverse/gradle .
+          cp blockverse/build.gradle.kts .
+          cp blockverse/settings.gradle.kts .
+          cp blockverse/gradle.properties .
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build APK
+        run: |
+          chmod +x blockverse/gradlew
+          cd blockverse
+          ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BLOCKVERSE-APK
+          path: blockverse/app/build/outputs/apk/debug/app-debug.apk
